@@ -109,4 +109,4 @@ class OperationDbInterface(object):
 
 if __name__ == "__main__":
     op = OperationDbInterface()
-    print(op.select_all_sql('select * from api'))
+    print(op.select_one_sql('select * from api where function = \'login\'')['data'])
