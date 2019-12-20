@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import os
 import pymysql
 from public import config
 import configparser
@@ -35,7 +34,7 @@ class OperationDbInterface(object):
             logger.exception(e)
 
     '''
-    删除、更新操作
+    删除、更新操作，可执行insert、update、delete单条数据操作
     '''
 
     def operate_sql(self, sql):
@@ -46,6 +45,14 @@ class OperationDbInterface(object):
         except pymysql.Error as e:
             self.conn.rollback()
             result = {'code': '400', 'message': '执行通用操作失败', 'data': []}
+            print("Mysql Error %d:%s" % (e.args[0], e.args[1]))
+            logging.basicConfig(filename=src_path + '/log/syserror.log', level=logging.DEBUG, format='%(asctime)s %('
+                                                                                                     'filename)s[line:%('
+                                                                                                     'lineno)d] %('
+                                                                                                     'levelname)s %('
+                                                                                                     'message)s')
+            logger = logging.getLogger(__name__)
+            logger.exception(e)
         return result
 
     '''
@@ -58,12 +65,48 @@ class OperationDbInterface(object):
             if rows_affect > 0:
                 results = self.cur.fetchone()
                 result = {'code': '200', 'message': '执行单条查询成功', 'data': results}
+            else:
+                result = {'code': '200', 'message': '执行单条查询成功', 'data': []}
         except pymysql.Error as e:
             self.conn.rollback()
             result = {'code': '400', 'message': '执行单条查询操作失败', 'data': []}
+            print("Mysql Error %d:%s" % (e.args[0], e.args[1]))
+            logging.basicConfig(filename=src_path + '/log/syserror.log', level=logging.DEBUG, format='%(asctime)s %('
+                                                                                                     'filename)s[line:%('
+                                                                                                     'lineno)d] %('
+                                                                                                     'levelname)s %('
+                                                                                                     'message)s')
+            logger = logging.getLogger(__name__)
+            logger.exception(e)
+        return result
+
+    '''
+    查询多条数据
+    '''
+
+    def select_all_sql(self, sql):
+        try:
+            rows_affect = self.cur.execute(sql)
+            if rows_affect > 0:
+                self.cur.scroll(0, mode='absolute')  # 游标光标回到初始位置
+                results = self.cur.fetchall()  # 返回游标中所有结果
+                result = {'code': '200', 'message': '查询多条操作成功', 'data': results}
+            else:
+                result = {'code': '200', 'message': '执行多条查询成功', 'data': []}
+        except pymysql.Error as e:
+            self.conn.rollback()
+            result = {'code': '400', 'message': '执行单条查询操作失败', 'data': []}
+            print("Mysql Error %d:%s" % (e.args[0], e.args[1]))
+            logging.basicConfig(filename=src_path + '/log/syserror.log', level=logging.DEBUG, format='%(asctime)s %('
+                                                                                                     'filename)s[line:%('
+                                                                                                     'lineno)d] %('
+                                                                                                     'levelname)s %('
+                                                                                                     'message)s')
+            logger = logging.getLogger(__name__)
+            logger.exception(e)
         return result
 
 
 if __name__ == "__main__":
     op = OperationDbInterface()
-    print(op.select_one_sql('select * from t_sys_user where username = \'lr_lzy\''))
+    print(op.select_all_sql('select * from api'))
