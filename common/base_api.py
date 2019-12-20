@@ -31,4 +31,4 @@ if __name__ == "__main__":
     testdata = op.select_one_sql('select * from api where function = \'login\'')['data']
     print(testdata)
     req = send_requests(testdata)
-    print(req)
+    print(req['data'])

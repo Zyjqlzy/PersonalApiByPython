@@ -16,7 +16,7 @@ class TestLogin(unittest.TestCase):
 
     def test_login(self):
         r = base_api.send_requests(self.testdata)
-        return r['data']
+        print(r['data'])
 
 
 if __name__ == "__main__":
