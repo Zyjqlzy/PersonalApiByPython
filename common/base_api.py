@@ -3,17 +3,18 @@
 
 import requests
 from common import mysql_util
+from common import logger
 
-
+log = logger.Log()
 def send_requests(testdata):
+
     method = testdata['method']  # POST or GET or DELETE
     url = testdata['url']  # 接口
     params = eval(testdata['params'])  # 参数
     test_func = testdata['function']  # 功能
-    print("*******正在执行用例：-----  %s  ----**********" % test_func)
-    print("请求方式：%s, 请求url:%s" % (method, url))
-    print("请求params：%s" % params)
-
+    log.debug("*******正在执行用例：-----  %s  ----**********" % test_func)
+    log.debug("请求方式：%s, 请求url:%s" % (method, url))
+    log.debug("请求params：%s" % params)
     try:
         if method == "post":
             r = requests.post(url, data=params)
@@ -21,8 +22,8 @@ def send_requests(testdata):
             r = requests.get(url, params)
         result = r.json()
     except Exception as e:
-        print(e)
-
+        log.error(e)
+    log.debug("返回结果：%s" % result)
     return result
 
 
