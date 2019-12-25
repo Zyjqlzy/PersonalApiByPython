@@ -6,8 +6,9 @@ from common import mysql_util
 from common import logger
 
 log = logger.Log()
-def send_requests(testdata):
 
+
+def send_requests(testdata):
     method = testdata['method']  # POST or GET or DELETE
     url = testdata['url']  # 接口
     params = eval(testdata['params'])  # 参数
