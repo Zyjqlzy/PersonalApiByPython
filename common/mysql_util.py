@@ -106,6 +106,13 @@ class OperationDbInterface(object):
             logger.exception(e)
         return result
 
+    '''
+    关闭数据库连接
+    '''
+    def close(self):
+        self.cur.close()
+        self.conn.close()
+
 
 if __name__ == "__main__":
     op = OperationDbInterface()

@@ -15,8 +15,11 @@ class TestLogin(unittest.TestCase):
         print(self.testdata)
 
     def test_login(self):
-        r = base_api.send_requests(self.testdata)
-        print(r['data'])
+        self.r = base_api.send_requests(self.testdata)
+
+    def tearDown(self):
+        print(self.r['data'])
+        self.op.close()
 
 
 if __name__ == "__main__":
