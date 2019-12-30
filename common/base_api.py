@@ -4,14 +4,14 @@
 import requests
 from common import mysql_util
 from common import logger
-
+import json
 log = logger.Log()
 
 
 def send_requests(testdata):
     method = testdata['method']  # POST or GET or DELETE
     url = testdata['url']  # 接口
-    params = eval(testdata['params'])  # 参数
+    params = testdata['params']  # 参数
     test_func = testdata['function']  # 功能
     log.debug("*******正在执行用例：-----  %s  ----**********" % test_func)
     log.debug("请求方式：%s, 请求url:%s" % (method, url))

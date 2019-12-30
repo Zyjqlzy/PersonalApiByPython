@@ -30,7 +30,6 @@ class TestLogin(unittest.TestCase):
         self.r = base_api.send_requests(self.testdata)
 
     def tearDown(self):
-        print(self.r['data'])
         self.op.close()
 
 

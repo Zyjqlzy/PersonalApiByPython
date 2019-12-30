@@ -113,4 +113,4 @@ class OperationDbInterface(object):
 
 if __name__ == "__main__":
     op = OperationDbInterface()
-    print(op.select_one_sql('select * from api where function = \'login\'')['data'])
+    print(type(op.select_one_sql('select * from api where function = \'login\'')['data']))
